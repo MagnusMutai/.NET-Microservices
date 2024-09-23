@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PlatformService.Data;
 using PlatformService.Dtos;
+using PlatformService.Models;
 
 namespace PlatformService.Controllers;
 
@@ -25,6 +26,28 @@ public class PlatformsController : ControllerBase
         var platformItem = repository.GetAllPlatforms();
         
         return Ok(mapper.Map<IEnumerable<PlatformReadDto>>(platformItem));
+    }
+
+    [HttpGet("{id}", Name = "GetPlatformById")]
+    public ActionResult<PlatformReadDto> GetPlatformById(int id)
+    {
+        Console.WriteLine("--> Getting Platform...");
+        var platformItem = repository.GetPlatformById(id);
+        if(platformItem != null)
+        {
+            return Ok(mapper.Map<PlatformReadDto>(platformItem));
+        }
+        else
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpPost]
+    public async ActionResult<PlatformReadDto> CreatePlatform(PlartformCreateDto plartformCreateDto)
+    {
+        Console.WriteLine("--> Creating a platform...");
+        var platformModel = mapper.Map<Platform>(plartformCreateDto);
     }
 
 }
