@@ -44,10 +44,15 @@ public class PlatformsController : ControllerBase
     }
 
     [HttpPost]
-    public async ActionResult<PlatformReadDto> CreatePlatform(PlartformCreateDto plartformCreateDto)
+    public ActionResult<PlatformReadDto> CreatePlatform(PlartformCreateDto platformCreateDto)
     {
         Console.WriteLine("--> Creating a platform...");
-        var platformModel = mapper.Map<Platform>(plartformCreateDto);
+        var platformModel = mapper.Map<Platform>(platformCreateDto);
+        repository.CreatePlatform(platformModel);
+        repository.SaveChanges();
+
+        var platformReadDto = mapper.Map<PlatformReadDto>(platformModel);
+        return CreatedAtRoute(nameof(GetPlatformById), new {Id = platformReadDto.Id}, platformReadDto);
     }
 
 }
