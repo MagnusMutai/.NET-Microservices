@@ -22,6 +22,9 @@ public class PlatformsController : ControllerBase
     public ActionResult<IEnumerable<PlatformReadDto>> GetPlatforms()
     {
         Console.WriteLine("--> Getting Platforms...");
+        var platformItem = repository.GetAllPlatforms();
+        
+        return Ok(mapper.Map<IEnumerable<PlatformReadDto>>(platformItem));
     }
 
 }
